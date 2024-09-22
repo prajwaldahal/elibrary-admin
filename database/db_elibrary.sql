@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2024 at 12:42 PM
+-- Generation Time: Sep 21, 2024 at 10:10 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -24,34 +24,47 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin_notification`
+--
+
+CREATE TABLE `admin_notification` (
+  `id` int(11) NOT NULL,
+  `Notification` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `books`
 --
 
 CREATE TABLE `books` (
   `isbn_no` varchar(13) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `author` varchar(255) DEFAULT NULL,
+  `title` varchar(100) NOT NULL,
+  `author` varchar(20) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
-  `cover_image` varchar(255) DEFAULT NULL,
-  `description` text DEFAULT NULL
+  `cover_image` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `added_on` timestamp NULL DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `books`
+-- Triggers `books`
 --
-
-INSERT INTO `books` (`isbn_no`, `title`, `author`, `category_id`, `price`, `cover_image`, `description`) VALUES
-('978000000001', 'Book Title 1', 'Author 1', 1, '19.99', 'cover1.jpg', 'Description of Book 1'),
-('978000000002', 'Book Title 2', 'Author 2', 2, '24.99', 'cover2.jpg', 'Description of Book 2'),
-('978000000003', 'Book Title 3', 'Author 3', 3, '14.99', 'cover3.jpg', 'Description of Book 3'),
-('978000000004', 'Book Title 4', 'Author 4', 4, '29.99', 'cover4.jpg', 'Description of Book 4'),
-('978000000005', 'Book Title 5', 'Author 5', 5, '12.99', 'cover5.jpg', 'Description of Book 5'),
-('978000000006', 'Book Title 6', 'Author 6', 6, '9.99', 'cover6.jpg', 'Description of Book 6'),
-('978000000007', 'Book Title 7', 'Author 7', 7, '15.99', 'cover7.jpg', 'Description of Book 7'),
-('978000000008', 'Book Title 8', 'Author 8', 8, '18.99', 'cover8.jpg', 'Description of Book 8'),
-('978000000009', 'Book Title 9', 'Author 9', 9, '22.99', 'cover9.jpg', 'Description of Book 9'),
-('978000000010', 'Book Title 10', 'Author 10', 10, '25.99', 'cover10.jpg', 'Description of Book 10');
+DELIMITER $$
+CREATE TRIGGER `before_book_insert` BEFORE INSERT ON `books` FOR EACH ROW BEGIN
+  -- Check if the isbn_no exists in the requestedbook table
+  IF EXISTS (SELECT 1 FROM requestedbook WHERE isbn = NEW.isbn_no) THEN
+    -- Update the is_deleted field to 1 in requestedbook if isbn matches
+    UPDATE requestedbook
+    SET is_deleted = 1
+    WHERE isbn = NEW.isbn_no;
+  END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -61,24 +74,23 @@ INSERT INTO `books` (`isbn_no`, `title`, `author`, `category_id`, `price`, `cove
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `category_name` varchar(255) NOT NULL
+  `category_name` varchar(255) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `categories`
+-- Table structure for table `reading_progress`
 --
 
-INSERT INTO `categories` (`id`, `category_name`) VALUES
-(6, 'Biography'),
-(7, 'Children'),
-(9, 'Fantasy'),
-(2, 'Fiction'),
-(5, 'History'),
-(1, 'Mystery'),
-(3, 'Non-Fiction'),
-(10, 'Romance'),
-(4, 'Science'),
-(8, 'Technology');
+CREATE TABLE `reading_progress` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `book_id` varchar(13) NOT NULL,
+  `progress` int(11) NOT NULL,
+  `last_read` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -88,12 +100,23 @@ INSERT INTO `categories` (`id`, `category_name`) VALUES
 
 CREATE TABLE `rental_transactions` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
   `isbn_no` varchar(13) DEFAULT NULL,
   `rental_date` date NOT NULL,
   `expiry_date` date NOT NULL,
   `amount_paid` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Triggers `rental_transactions`
+--
+DELIMITER $$
+CREATE TRIGGER `before_delete_rental_transaction` BEFORE DELETE ON `rental_transactions` FOR EACH ROW BEGIN
+    INSERT INTO rented_books_history (user_id, isbn_no, rented_date, expired_date, price)
+    VALUES (OLD.user_id, OLD.isbn_no, OLD.rental_date, OLD.expiry_date, OLD.amount_paid);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -103,11 +126,26 @@ CREATE TABLE `rental_transactions` (
 
 CREATE TABLE `rented_books_history` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
   `isbn_no` varchar(13) DEFAULT NULL,
   `rented_date` date DEFAULT NULL,
   `expired_date` date DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requestedbook`
+--
+
+CREATE TABLE `requestedbook` (
+  `request_id` int(11) NOT NULL,
+  `isbn` varchar(13) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `request_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -118,7 +156,7 @@ CREATE TABLE `rented_books_history` (
 
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
   `isbn_no` varchar(13) DEFAULT NULL,
   `rating` tinyint(4) NOT NULL CHECK (`rating` >= 1 and `rating` <= 5),
   `comment` text DEFAULT NULL,
@@ -132,7 +170,7 @@ CREATE TABLE `reviews` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `full_name` varchar(100) DEFAULT NULL,
@@ -140,21 +178,22 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `users`
+-- Table structure for table `user_tokens`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `registration_date`, `last_login`) VALUES
-(1224, 'user1@example.com', 'password1', 'User One', '2023-01-01', '2023-01-10 10:00:00'),
-(1225, 'user2@example.com', 'password2', 'User Two', '2023-02-01', '2023-02-10 11:00:00'),
-(1226, 'user3@example.com', 'password3', 'User Three', '2023-03-01', '2023-03-10 12:00:00'),
-(1227, 'user4@example.com', 'password4', 'User Four', '2023-04-01', '2023-04-10 13:00:00'),
-(1228, 'user5@example.com', 'password5', 'User Five', '2023-05-01', '2023-05-10 14:00:00'),
-(1229, 'user6@example.com', 'password6', 'User Six', '2023-06-01', '2023-06-10 15:00:00'),
-(1230, 'user7@example.com', 'password7', 'User Seven', '2023-07-01', '2023-07-10 16:00:00'),
-(1231, 'user8@example.com', 'password8', 'User Eight', '2023-08-01', '2023-08-10 17:00:00'),
-(1232, 'user9@example.com', 'password9', 'User Nine', '2023-09-01', '2023-09-10 18:00:00'),
-(1233, 'user10@example.com', 'password10', 'User Ten', '2023-10-01', '2023-10-10 19:00:00');
+CREATE TABLE `user_tokens` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `fcm_token` varchar(255) NOT NULL,
+  `fcm_last_refreshed` timestamp NOT NULL DEFAULT current_timestamp(),
+  `jwt_token` varchar(500) NOT NULL,
+  `jwt_expiry` timestamp NOT NULL DEFAULT current_timestamp(),
+  `jwt_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -175,6 +214,14 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `category_name` (`category_name`);
 
 --
+-- Indexes for table `reading_progress`
+--
+ALTER TABLE `reading_progress`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `book_id` (`book_id`);
+
+--
 -- Indexes for table `rental_transactions`
 --
 ALTER TABLE `rental_transactions`
@@ -189,6 +236,13 @@ ALTER TABLE `rented_books_history`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `isbn_no` (`isbn_no`);
+
+--
+-- Indexes for table `requestedbook`
+--
+ALTER TABLE `requestedbook`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `reviews`
@@ -206,6 +260,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -214,6 +275,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `reading_progress`
+--
+ALTER TABLE `reading_progress`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `rental_transactions`
@@ -228,16 +295,22 @@ ALTER TABLE `rented_books_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `requestedbook`
+--
+ALTER TABLE `requestedbook`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `user_tokens`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1234;
+ALTER TABLE `user_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -250,24 +323,27 @@ ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
 
 --
+-- Constraints for table `reading_progress`
+--
+ALTER TABLE `reading_progress`
+  ADD CONSTRAINT `reading_progress_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`isbn_no`);
+
+--
 -- Constraints for table `rental_transactions`
 --
 ALTER TABLE `rental_transactions`
-  ADD CONSTRAINT `rental_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `rental_transactions_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
 
 --
 -- Constraints for table `rented_books_history`
 --
 ALTER TABLE `rented_books_history`
-  ADD CONSTRAINT `rented_books_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `rented_books_history_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
 COMMIT;
 

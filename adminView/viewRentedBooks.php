@@ -4,40 +4,53 @@
     <thead>
       <tr>
         <th>R.N.</th>
-        <th>Customer</th>
+        <th>ISBN NO</th>
+        <th>title</th>
+        <th>Customer id</th>
+        <th>Name</th>
         <th>Rented On</th>
-        <th>Expire On</th>
+        <th>Expires On</th>
         <th>Payment</th>
-        <th>More Details</th>
      </tr>
     </thead>
-   
-</div>
-<!-- Modal -->
-<div class="modal fade" id="viewModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          
-          <h4 class="modal-title">Order Details</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="order-view-modal modal-body">
-        
-        </div>
-      </div><!--/ Modal content-->
-    </div><!-- /Modal dialog-->
-  </div>
-<script>
-     //for view order modal  
-    $(document).ready(function(){
-      $('.openPopup').on('click',function(){
-        var dataURL = $(this).attr('data-href');
-    
-        $('.order-view-modal').load(dataURL,function(){
-          $('#viewModal').modal({show:true});
-        });
-      });
-    });
- </script>
+    <tbody>
+            <?php
+            include_once "../config/dbconnect.php";
+            $sql = "SELECT 
+                    rental_transactions.id,               
+                    rental_transactions.isbn_no,       
+                    books.title,                         
+                    rental_transactions.user_id,   
+                    users.full_name,                  
+                    rental_transactions.rental_date, 
+                    rental_transactions.expiry_date, 
+                    rental_transactions.amount_paid    
+                FROM 
+                    rental_transactions
+                JOIN 
+                    books ON rental_transactions.isbn_no = books.isbn_no
+                JOIN 
+                    users ON rental_transactions.user_id = users.id";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+            ?>
+            <tr>
+                <td class="text-center align-middle"><?= $row["id"] ?></td>
+                <td class="text-center align-middle"><?= $row["isbn_no"] ?></td>
+                <td class="text-center align-middle"><?= $row["title"] ?></td>
+                <td class="text-center align-middle"><?= $row["user_id"] ?></td>
+                <td class="text-center align-middle"><?= $row["full_name"] ?></td>
+                <td class="text-center align-middle"><?= $row["rental_date"] ?></td>
+                <td class="text-center align-middle"><?= $row["expiry_date"] ?></td>
+                <td class="text-center align-middle"><?= $row["amount_paid"] ?></td>
+            </tr>
+
+            <?php
+                }
+            } else {
+                echo "<tr><td colspan='8' class='text-center'>Sorry No books are on Rent</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>

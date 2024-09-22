@@ -1,7 +1,18 @@
 
-<div >
-  <h3>Category Items</h3>
-  <table class="table ">
+<div class="container mt-4">
+    <div class="row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="col-auto">Category</h2>
+        <div class="col-auto">
+          
+            <button type="button" class="btn btn-primary d-flex align-items-center" 
+                    data-toggle="modal" data-target="#myModal"
+                    style="border-radius: 15px; padding: 20px 30px; font-weight: bold; 
+                           transition: background-color 0.3s ease-in-out, transform 0.2s;">
+                Add Categories
+            </button>
+        </div>
+    </div>
+  <table class="table table-striped">
     <thead>
       <tr>
         <th class="text-center">S.N.</th>
@@ -11,7 +22,7 @@
     </thead>
     <?php
       include_once "../config/dbconnect.php";
-      $sql="SELECT * from categories";
+      $sql="SELECT * from categories where is_deleted=0";
       $result=$conn-> query($sql);
       $count=1;
       if ($result-> num_rows > 0){
@@ -30,11 +41,6 @@
       ?>
   </table>
 
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-secondary" style="height:40px" data-toggle="modal" data-target="#myModal">
-    Add Category
-  </button>
-
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -46,10 +52,10 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <form  enctype='multipart/form-data' action="./controller/addCatController.php" method="POST">
+          <form  enctype='multipart/form-data' id="catform" method="POST" onsubmit="return addCategory()">
             <div class="form-group">
               <label for="c_name">Category Name:</label>
-              <input type="text" class="form-control" name="c_name" required>
+              <input type="text" class="form-control" name="c_name" id="c_name" required>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary" name="upload" style="height:40px">Add Category</button>

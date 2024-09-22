@@ -4,7 +4,7 @@
             <label class="mr-2" for="year">Select Year:</label>
             <select id="year" name="year" class="form-control">
                 <?php
-                for ($y=date('Y'); $y>=2018; $y--) {
+                for ($y=date('Y'); $y>=2022; $y--) {
                     echo "<option value='$y'" . ($selectedYear == $y ? "selected" : "") . ">$y</option>";
                 }
                 ?>
@@ -61,7 +61,13 @@
     </div>
 </div>
 <script>
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(loadIncomeData()); 
-    dateChange();
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    google.charts.setOnLoadCallback(initPage);
+
+    function initPage() {
+        loadIncomeData();  // Load income data after Google Charts is ready
+        dateChange();      // Set up the year change event handler
+    }
+
 </script>

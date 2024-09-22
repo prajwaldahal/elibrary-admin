@@ -1,39 +1,47 @@
 <?php
-    include_once "../config/dbconnect.php";
-    
-    if(isset($_POST['upload']))
-    {
-       
-        $booksName = $_POST['p_name'];
-        $desc= $_POST['p_desc'];
-        $price = $_POST['p_price'];
-        $category = $_POST['category'];
-       
-            
-        $name = $_FILES['file']['name'];
-        $temp = $_FILES['file']['tmp_name'];
-    
-        $location="./uploads/";
-        $image=$location.$name;
+include_once "../config/dbconnect.php";
 
-        $target_dir="../uploads/";
-        $finalImage=$target_dir.$name;
+if (isset($_POST['upload'])) {
+    $isbn = $_POST['isbn_no'];
+    $booksName = $_POST['name'];
+    $desc = $_POST['desc'];
+    $price = $_POST['price'];
+    $category = $_POST['category'];
+    $author = $_POST['author'];
 
-        move_uploaded_file($temp,$finalImage);
+    $name = $_FILES['file']['name'];
+    $temp = $_FILES['file']['tmp_name'];
 
-         $insert = mysqli_query($conn,"INSERT INTO books
-         (books_name,cover_image,price,books_desc,category_id) 
-         VALUES ('$booksName','$image',$price,'$desc','$category')");
- 
-         if(!$insert)
-         {
-             echo mysqli_error($conn);
-         }
-         else
-         {
-             echo "Records added successfully.";
-         }
-     
+    $location = "./uploads/";
+    $image = $location . $name;
+
+    $target_dir = "../uploads/";
+    $finalImage = $target_dir . $name;
+
+    if (move_uploaded_file($temp, $finalImage)) {
+        $insert_query = "INSERT INTO books 
+        (isbn_no, title, cover_image, author, price, `description`, category_id, added_on) 
+        VALUES ('$isbn', '$booksName', '$image', '$author', $price, '$desc', '$category', NOW())";
+
+        $insert = mysqli_query($conn, $insert_query);
+
+        if (!$insert) {
+            unlink($finalImage);
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Internal Server Error"]);
+        } else {
+            http_response_code(200);
+            echo json_encode(["status" => "success", "message" => "Records added successfully."]);
+        }
+    } else {
+        http_response_code(500);
+        echo json_encode(["status" => "error", "message" => "Failed to upload file."]);
     }
-        
+} else {
+    http_response_code(400);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Invalid request."
+    ]);
+}
 ?>

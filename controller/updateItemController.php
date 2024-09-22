@@ -2,16 +2,16 @@
     include_once "../config/dbconnect.php";
 
     $isbn_no=$_POST['isbn_no'];
-    $p_name= $_POST['p_name'];
-    $p_desc= $_POST['p_desc'];
-    $p_price= $_POST['p_price'];
+    $name= $_POST['name'];
+    $desc= $_POST['desc'];
+    $price= $_POST['price'];
     $category= $_POST['category'];
 
     if( isset($_FILES['newImage']) ){
         
         $location="./uploads/";
         $img = $_FILES['newImage']['name'];
-        $tmp = $_FILES['newImage']['tmp_name'];
+        $tmp = $_FILES['newImage']['tmname'];
         $dir = '../uploads/';
         $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
         $valid_extensions = array('jpeg', 'jpg', 'png', 'gif','webp');
@@ -25,9 +25,9 @@
         $final_image=$_POST['existingImage'];
     }
     $updateItem = mysqli_query($conn,"UPDATE books SET 
-        books_name='$p_name', 
-        books_desc='$p_desc', 
-        price=$p_price,
+        books_name='$name', 
+        books_desc='$desc', 
+        price=$price,
         category_id=$category,
         cover_image='$final_image' 
         WHERE isbn_no=$isbn_no");

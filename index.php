@@ -26,15 +26,10 @@
                     <h4>Total Users</h4>
                     <h5>
                     <?php
-                        $sql="SELECT * from users";
+                        $sql="SELECT count(*) as total_users from users";
                         $result=$conn-> query($sql);
-                        $count=0;
-                        if ($result-> num_rows > 0){
-                            while ($row=$result-> fetch_assoc()) {
-                                $count++;
-                            }
-                        }
-                        echo $count;
+                        echo $result-> fetch_assoc()['total_users'];
+
                     ?>
                     </h5>
                 </div>
@@ -47,15 +42,10 @@
                     <h4>Total Categories</h4>
                     <h5>
                     <?php
-                        $sql="SELECT * from categories";
+                        $sql="SELECT count(*) as total_cat from categories";
                         $result=$conn-> query($sql);
-                        $count=0;
-                        if ($result-> num_rows > 0){
-                            while ($row=$result-> fetch_assoc()) {
-                                $count++;
-                            }
-                        }
-                        echo $count;
+                        echo $result-> fetch_assoc()['total_cat'];
+                       
                     ?>
                     </h5>
                 </div>
@@ -68,15 +58,9 @@
                     <h4>Total Books</h4>
                     <h5>
                     <?php
-                        $sql="SELECT * from books";
+                        $sql="SELECT count(*) as total_books from books";
                         $result=$conn-> query($sql);
-                        $count=0;
-                        if ($result-> num_rows > 0){
-                            while ($row=$result-> fetch_assoc()) {
-                                $count++;
-                            }
-                        }
-                        echo $count;
+                        echo $result-> fetch_assoc()['total_books'];
                     ?>
                     </h5>
                 </div>
@@ -89,15 +73,9 @@
                     <h4>Total Orders</h4>
                     <h5>
                     <?php
-                        $sql="SELECT * from rental_transactions";
+                        $sql="SELECT count(*) as total_orders from rental_transactions";
                         $result=$conn-> query($sql);
-                        $count=0;
-                        if ($result-> num_rows > 0){
-                            while ($row=$result-> fetch_assoc()) {
-                                $count++;
-                            }
-                        }
-                        echo $count;
+                        echo $result-> fetch_assoc()['total_orders'];
                     ?>
                     </h5>
                 </div>
@@ -105,25 +83,6 @@
         </div>
     </div>
 </div>
-
-            
-        <?php
-            if (isset($_GET['category']) && $_GET['category'] == "success") {
-                echo '<script> alert("Category Successfully Added")</script>';
-            }else if (isset($_GET['category']) && $_GET['category'] == "error") {
-                echo '<script> alert("Adding Unsuccess")</script>';
-            }
-            if (isset($_GET['size']) && $_GET['size'] == "success") {
-                echo '<script> alert("Size Successfully Added")</script>';
-            }else if (isset($_GET['size']) && $_GET['size'] == "error") {
-                echo '<script> alert("Adding Unsuccess")</script>';
-            }
-            if (isset($_GET['variation']) && $_GET['variation'] == "success") {
-                echo '<script> alert("Variation Successfully Added")</script>';
-            }else if (isset($_GET['variation']) && $_GET['variation'] == "error") {
-                echo '<script> alert("Adding Unsuccess")</script>';
-            }
-        ?>
 
 
     <script type="text/javascript" src="./assets/js/ajaxWork.js"></script>    
