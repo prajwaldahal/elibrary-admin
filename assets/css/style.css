@@ -88,6 +88,19 @@
     color: #ECF0F1;
     cursor: pointer;
 }
+.notification {
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: 0;
+    right: -20;
+    transform: translate(50%, -50%);
+    font-weight: bold;
+    color: #f78a8a;
+}
+
 
 .openbtn {
     font-size: 20px;

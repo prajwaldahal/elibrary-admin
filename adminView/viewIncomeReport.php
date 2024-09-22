@@ -11,6 +11,17 @@
             </select>
         </form>
     </div>
+    <div class="col-sm-6 mb-4">
+        <form method="POST" class="form-inline">
+            <label class="mr-2" for="chartType">Select Chart Type:</label>
+            <select id="chartType" class="form-control">
+                <option value="LineChart">Line Chart</option>
+                <option value="PieChart">Pie Chart</option>
+                <option value="BarChart">Bar Chart</option>
+                <option value="ColumnChart">Column Chart</option>
+            </select>
+        </form>
+    </div>
 </div>
 <div class="col-md-12 mb-4">
     <div id="income_chart" style="width: 100%; height: 500px;"></div>
@@ -22,7 +33,7 @@
             <div class="card-body">
                 <i class="fa fa-dollar mb-2" style="font-size: 70px;"></i>
                 <h4>Total Income</h4>
-                <h5 id="totalIncomeValue">Rs.0.00</h5>
+                <h5 id="totalIncomeValue">Rs. 0.00</h5>
             </div>
         </div>
     </div>
@@ -66,8 +77,14 @@
     google.charts.setOnLoadCallback(initPage);
 
     function initPage() {
-        loadIncomeData();  // Load income data after Google Charts is ready
-        dateChange();      // Set up the year change event handler
+        loadIncomeData();  
+        dateChange();      
     }
+    $('#year').on('change', function() {
+        loadMonthlyIncomeChart();  
+    });
+    $('#chartType').on('change', function() {
+        loadMonthlyIncomeChart();
+    });
 
 </script>

@@ -1,5 +1,5 @@
 <div id="ordersBtn" >
-  <h2>Rental Details</h2>
+  <h2>Rental History</h2>
   <table class="table table-striped">
     <thead>
       <tr>

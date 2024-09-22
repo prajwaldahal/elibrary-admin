@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 21, 2024 at 10:10 PM
+-- Generation Time: Sep 22, 2024 at 05:21 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -29,7 +29,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin_notification` (
   `id` int(11) NOT NULL,
-  `Notification` text NOT NULL
+  `notification_type` enum('info','warning','error') NOT NULL,
+  `message` text NOT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_read` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -49,6 +54,22 @@ CREATE TABLE `books` (
   `added_on` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `books`
+--
+
+INSERT INTO `books` (`isbn_no`, `title`, `author`, `category_id`, `price`, `cover_image`, `description`, `added_on`, `is_deleted`) VALUES
+('9780132350884', 'Clean Code', 'Robert C. Martin', 2, '29.99', './uploads/821590.jpg', 'A Handbook of Agile Software Craftsmanship', '2024-09-21 20:15:29', 0),
+('9780134177304', 'Design Patterns', 'Erich Gamma', 2, '50.00', NULL, 'Elements of Reusable Object-Oriented Software', '2024-09-21 20:15:29', 0),
+('9780134494165', 'The Clean Coder', 'Robert C. Martin', 2, '34.99', NULL, 'A Code of Conduct for Professional Programmers', '2024-09-21 20:15:29', 0),
+('9780134685991', 'Effective Java', 'Joshua Bloch', 2, '45.00', NULL, 'A Programming Language Guide', '2024-09-21 20:15:29', 0),
+('9780134757590', 'Java Concurrency in Practice', 'Brian Goetz', 2, '49.99', NULL, 'Build Multi-Threaded Applications', '2024-09-21 20:15:29', 0),
+('9780136142510', 'Code Complete', 'Steve McConnell', 2, '39.99', NULL, 'A Practical Handbook of Software Construction', '2024-09-21 20:15:29', 0),
+('9780201616224', 'The Pragmatic Programmer', 'Andrew Hunt', 2, '39.99', NULL, 'Your Journey To Mastery', '2024-09-21 20:15:29', 0),
+('9780321573513', 'Refactoring', 'Martin Fowler', 2, '44.99', NULL, 'Improving the Design of Existing Code', '2024-09-21 20:15:29', 0),
+('9781491946008', 'JavaScript: The Good Parts', 'Douglas Crockford', 2, '20.00', NULL, 'Unearthing the Excellence in JavaScript', '2024-09-21 20:15:29', 0),
+('9781491950357', 'You Don\'t Know JS', 'Kyle Simpson', 2, '25.00', NULL, 'Scope & Closures', '2024-09-21 20:15:29', 0);
 
 --
 -- Triggers `books`
@@ -78,6 +99,22 @@ CREATE TABLE `categories` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `category_name`, `is_deleted`) VALUES
+(1, 'Fiction', 0),
+(2, 'Non-Fiction', 0),
+(3, 'Science', 0),
+(4, 'History', 0),
+(5, 'Fantasy', 0),
+(6, 'Biography', 0),
+(7, 'Mystery', 0),
+(8, 'Romance', 0),
+(9, 'Self-Help', 0),
+(10, 'Cookbooks', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +128,22 @@ CREATE TABLE `reading_progress` (
   `progress` int(11) NOT NULL,
   `last_read` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reading_progress`
+--
+
+INSERT INTO `reading_progress` (`id`, `user_id`, `book_id`, `progress`, `last_read`) VALUES
+(1, '10001', '9780132350884', 50, '2024-09-21 20:15:29'),
+(2, '10002', '9780201616224', 20, '2024-09-21 20:15:29'),
+(3, '10003', '9780134685991', 75, '2024-09-21 20:15:29'),
+(4, '10004', '9780134494165', 40, '2024-09-21 20:15:29'),
+(5, '10005', '9780134757590', 10, '2024-09-21 20:15:29'),
+(6, '10006', '9780134177304', 60, '2024-09-21 20:15:29'),
+(7, '10007', '9781491950357', 30, '2024-09-21 20:15:29'),
+(8, '10008', '9781491946008', 90, '2024-09-21 20:15:29'),
+(9, '10009', '9780136142510', 20, '2024-09-21 20:15:29'),
+(10, '10010', '9780321573513', 80, '2024-09-21 20:15:29');
 
 -- --------------------------------------------------------
 
@@ -111,9 +164,27 @@ CREATE TABLE `rental_transactions` (
 -- Triggers `rental_transactions`
 --
 DELIMITER $$
+CREATE TRIGGER `after_insert_rental_transaction` AFTER INSERT ON `rental_transactions` FOR EACH ROW BEGIN
+    DECLARE notification_message TEXT;
+    
+    SET notification_message = CONCAT('A book with ISBN ', NEW.isbn_no, ' has been rented by user ID ', NEW.user_id);
+    
+    INSERT INTO admin_notification (notification_type, message, user_id)
+    VALUES ('info', notification_message, NEW.user_id);
+END
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `before_delete_rental_transaction` BEFORE DELETE ON `rental_transactions` FOR EACH ROW BEGIN
+    DECLARE notification_message TEXT;
+    
     INSERT INTO rented_books_history (user_id, isbn_no, rented_date, expired_date, price)
     VALUES (OLD.user_id, OLD.isbn_no, OLD.rental_date, OLD.expiry_date, OLD.amount_paid);
+    
+    SET notification_message = CONCAT('Rental transaction for book ISBN ', OLD.isbn_no, ' has expired');
+
+    INSERT INTO admin_notification (notification_type, message, user_id)
+    VALUES ('info', notification_message, OLD.user_id);
 END
 $$
 DELIMITER ;
@@ -148,6 +219,22 @@ CREATE TABLE `requestedbook` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `requestedbook`
+--
+
+INSERT INTO `requestedbook` (`request_id`, `isbn`, `title`, `user_id`, `request_date`, `is_deleted`) VALUES
+(1, '9780134685991', 'Effective Java', '10003', '2024-09-21 20:15:29', 0),
+(2, '9780132350884', 'Clean Code', '10001', '2024-09-21 20:15:29', 0),
+(3, '9780201616224', 'The Pragmatic Programmer', '10002', '2024-09-21 20:15:29', 0),
+(4, '9780134494165', 'The Clean Coder', '10004', '2024-09-21 20:15:29', 0),
+(5, '9780134757590', 'Java Concurrency in Practice', '10005', '2024-09-21 20:15:29', 0),
+(6, '9780134177304', 'Design Patterns', '10006', '2024-09-21 20:15:29', 0),
+(7, '9781491950357', 'You Don\'t Know JS', '10007', '2024-09-21 20:15:29', 0),
+(8, '9781491946008', 'JavaScript: The Good Parts', '10008', '2024-09-21 20:15:29', 0),
+(9, '9780136142510', 'Code Complete', '10009', '2024-09-21 20:15:29', 0),
+(10, '9780321573513', 'Refactoring', '10010', '2024-09-21 20:15:29', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -163,6 +250,22 @@ CREATE TABLE `reviews` (
   `review_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `user_id`, `isbn_no`, `rating`, `comment`, `review_date`) VALUES
+(1, '10001', '9780132350884', 5, 'An essential read for all developers.', '2024-01-05'),
+(2, '10002', '9780201616224', 4, 'Great insights into programming.', '2024-01-06'),
+(3, '10003', '9780134685991', 5, 'Best Java book available.', '2024-01-07'),
+(4, '10004', '9780134494165', 3, 'Good, but a bit repetitive.', '2024-01-08'),
+(5, '10005', '9780134757590', 4, 'Very helpful for understanding concurrency.', '2024-01-09'),
+(6, '10006', '9780134177304', 5, 'A must-read for every developer.', '2024-01-10'),
+(7, '10007', '9781491950357', 5, 'JavaScript concepts explained well.', '2024-01-11'),
+(8, '10008', '9781491946008', 4, 'A good introduction to JavaScript.', '2024-01-12'),
+(9, '10009', '9780136142510', 5, 'Comprehensive coverage of software construction.', '2024-01-13'),
+(10, '10010', '9780321573513', 4, 'Useful techniques for refactoring.', '2024-01-14');
+
 -- --------------------------------------------------------
 
 --
@@ -177,6 +280,22 @@ CREATE TABLE `users` (
   `registration_date` date NOT NULL,
   `last_login` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `registration_date`, `last_login`) VALUES
+('10001', 'user1@example.com', 'hashed_password_1', 'User One', '2024-01-01', NULL),
+('10002', 'user2@example.com', 'hashed_password_2', 'User Two', '2024-01-02', NULL),
+('10003', 'user3@example.com', 'hashed_password_3', 'User Three', '2024-01-03', NULL),
+('10004', 'user4@example.com', 'hashed_password_4', 'User Four', '2024-01-04', NULL),
+('10005', 'user5@example.com', 'hashed_password_5', 'User Five', '2024-01-05', NULL),
+('10006', 'user6@example.com', 'hashed_password_6', 'User Six', '2024-01-06', NULL),
+('10007', 'user7@example.com', 'hashed_password_7', 'User Seven', '2024-01-07', NULL),
+('10008', 'user8@example.com', 'hashed_password_8', 'User Eight', '2024-01-08', NULL),
+('10009', 'user9@example.com', 'hashed_password_9', 'User Nine', '2024-01-09', NULL),
+('10010', 'user10@example.com', 'hashed_password_10', 'User Ten', '2024-01-10', NULL);
 
 -- --------------------------------------------------------
 
@@ -200,6 +319,13 @@ CREATE TABLE `user_tokens` (
 --
 
 --
+-- Indexes for table `admin_notification`
+--
+ALTER TABLE `admin_notification`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
@@ -218,8 +344,8 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `reading_progress`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `book_id` (`book_id`);
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `fk_reading_progress_user_id` (`user_id`);
 
 --
 -- Indexes for table `rental_transactions`
@@ -242,7 +368,7 @@ ALTER TABLE `rented_books_history`
 --
 ALTER TABLE `requestedbook`
   ADD PRIMARY KEY (`request_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `fk_requestedbook_user_id` (`user_id`);
 
 --
 -- Indexes for table `reviews`
@@ -264,11 +390,17 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_tokens`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `fk_user_tokens_user_id` (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `admin_notification`
+--
+ALTER TABLE `admin_notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -280,31 +412,31 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `reading_progress`
 --
 ALTER TABLE `reading_progress`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `rental_transactions`
 --
 ALTER TABLE `rental_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1234;
 
 --
 -- AUTO_INCREMENT for table `rented_books_history`
 --
 ALTER TABLE `rented_books_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `requestedbook`
 --
 ALTER TABLE `requestedbook`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_tokens`
@@ -317,6 +449,12 @@ ALTER TABLE `user_tokens`
 --
 
 --
+-- Constraints for table `admin_notification`
+--
+ALTER TABLE `admin_notification`
+  ADD CONSTRAINT `admin_notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
 -- Constraints for table `books`
 --
 ALTER TABLE `books`
@@ -326,25 +464,41 @@ ALTER TABLE `books`
 -- Constraints for table `reading_progress`
 --
 ALTER TABLE `reading_progress`
+  ADD CONSTRAINT `fk_reading_progress_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reading_progress_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`isbn_no`);
 
 --
 -- Constraints for table `rental_transactions`
 --
 ALTER TABLE `rental_transactions`
+  ADD CONSTRAINT `fk_rental_transactions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `rental_transactions_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
 
 --
 -- Constraints for table `rented_books_history`
 --
 ALTER TABLE `rented_books_history`
+  ADD CONSTRAINT `fk_rented_books_history_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `rented_books_history_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
+
+--
+-- Constraints for table `requestedbook`
+--
+ALTER TABLE `requestedbook`
+  ADD CONSTRAINT `fk_requestedbook_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
+  ADD CONSTRAINT `fk_reviews_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`isbn_no`) REFERENCES `books` (`isbn_no`);
+
+--
+-- Constraints for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
+  ADD CONSTRAINT `fk_user_tokens_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

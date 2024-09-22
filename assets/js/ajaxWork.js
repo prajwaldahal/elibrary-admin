@@ -23,23 +23,18 @@ function loadIncomeData() {
     });
 }
 
-function dateChange() {
-    $('#year').on('change', function() {
-        loadMonthlyIncomeChart();
-    });
-}
-
 function loadMonthlyIncomeChart() {
     var year = $('#year').val();
+    var chartType = $('#chartType').val();
 
     $.ajax({
         url: 'controller/incomeController.php',
         type: 'POST',
-        data: { year: year, chart: true },
+        data: { yearSelected: year, chart: true },
         dataType: 'json',
         success: function(response) {
-            console.log('Data passed to drawChart:', response);            
-            drawChart(response,year);
+            console.log('Data passed to drawChart:', response);
+            drawChart(response, year, chartType);
         },
         error: function(xhr, status, error) {
             console.error('Error loading chart data:', status, error);
@@ -48,7 +43,7 @@ function loadMonthlyIncomeChart() {
     });
 }
 
-function drawChart(data,year) {
+function drawChart(data, year, chartType) {
     try {
         if (!data || !Array.isArray(data) || data.length === 0) {
             alert("No data available for the selected year.");
@@ -56,38 +51,81 @@ function drawChart(data,year) {
         }
 
         var chartData = [['Month', 'Income']];
-
         data.forEach(function(item) {
-            // Ensure month names are handled properly
             chartData.push([item.month, parseFloat(item.total_income)]);
         });
 
         var dataTable = google.visualization.arrayToDataTable(chartData);
 
         var options = {
-            title: 'Monthly Income-'+year,
-            curveType: 'function',
-            legend: { position: 'bottom' },
-            hAxis: {
-                title: 'Month',
-                format: 'MMM', 
-                gridlines: { count: 12 }
-            },
-            vAxis: {
-                title: 'Income',
-                format: 'Rs #,##0.00',
-                gridlines: { count: 12 },
-                viewWindow: { min: 0 }
-            },
+            title: 'Monthly Income - ' + year,
             tooltip: { isHtml: true },
-            series: {
-                0: { color: 'green' }
-            },
             height: 500,
             width: '100%'
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('income_chart'));
+        var chart;
+        if (chartType === 'ColumnChart') {
+            options.hAxis = {
+                title: 'Month',
+                format: 'MMM',
+                gridlines: { count: 12 }
+            };
+
+            options.legend={position: 'bottom'}
+
+            options.vAxis = {
+                title: 'Income (Rs)',
+                gridlines: { count: 10 },
+                viewWindow: { min: 0 }
+            };
+            chart = new google.visualization.ColumnChart(document.getElementById('income_chart'));
+
+        } 
+        else if(chartType==='PieChart') {
+            options.is3D= true;
+            options.legend= {
+                                position: 'right',
+                                alignment: 'start'
+                            }
+            chart = new google.visualization.PieChart(document.getElementById('income_chart'));
+        } 
+        else if(chartType==='BarChart') {
+
+            options.hAxis = {
+                title: 'Month',
+                format: 'MMM',
+                gridlines: { count: 12 }
+            };
+
+            options.legend={position: 'bottom'}
+
+            options.vAxis = {
+                title: 'Income (Rs)',
+                gridlines: { count: 10 },
+                viewWindow: { min: 0 }
+            };
+            chart = new google.visualization.BarChart(document.getElementById('income_chart'));
+
+
+        }
+        else{
+            options.hAxis = {
+                title: 'Month',
+                format: 'MMM',
+                gridlines: { count: 12 }
+            };
+
+            options.legend={position: 'bottom'}
+
+            options.vAxis = {
+                title: 'Income (Rs)',
+                gridlines: { count: 10 },
+                viewWindow: { min: 0 }
+            };
+            chart = new google.visualization.LineChart(document.getElementById('income_chart'));
+        }
+
         chart.draw(dataTable, options);
     } catch (error) {
         console.error('Error drawing chart:', error.message);
@@ -95,6 +133,69 @@ function drawChart(data,year) {
     }
 }
 
+function loadYearlyIncomeChart() {
+    var chartType = $('#yearChartType').val();
+
+    $.ajax({
+        url: 'controller/incomeController.php',
+        type: 'POST',
+        data: {chart: true, year:true},
+        dataType: 'json',
+        success: function(response) {
+            console.log('Data passed to drawChart:', response);
+            drawYearlyIncomeChart(response, chartType);
+        },
+        error: function(status, error) {
+            console.error('Error loading chart data:', status, error);
+            alert('Error loading data.');
+        }
+    });
+}
+
+function drawYearlyIncomeChart(data,chartType) {
+
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        alert("No data available for the selected year.");
+        return;
+    }
+
+    var chartData = [['Year', 'Income']];
+        data.forEach(function(item) {
+            chartData.push([item.year, parseFloat(item.total_income)]);
+        });
+
+    var dataTable = google.visualization.arrayToDataTable(chartData);
+    
+    var options = {
+        title: 'Yearly Income Report',
+        hAxis: { title: 'Year' },
+        vAxis: { title: 'Income (Rs)' },
+        legend: { position: 'bottom' },
+        tooltip: { isHtml: true },
+        height: 500,
+        width: '100%'
+    };
+
+    var chart;
+    if (chartType === 'ColumnChart') {
+        options.legend={position: 'bottom'}
+        chart = new google.visualization.ColumnChart(document.getElementById('yearly_income_chart'));
+    } else if(chartType==='PieChart') {
+        options.legend= {
+            position: 'right',
+            alignment: 'start'
+        }
+        chart = new google.visualization.PieChart(document.getElementById('yearly_income_chart'));
+    } else if(chartType==='BarChart') {
+        options.legend={position: 'bottom'}
+        chart = new google.visualization.BarChart(document.getElementById('yearly_income_chart'));
+    }
+    else{
+        chart = new google.visualization.LineChart(document.getElementById('yearly_income_chart'));
+    }
+
+    chart.draw(dataTable, options);
+}
 
 
 // Function to show all books
@@ -333,23 +434,67 @@ function itemEditForm(id) {
     }
 }
 
-// Function to update books data
 function updateItems() {
-    var isbn_no = $('#isbn_no').val();
-    var name = $('#name').val();
-    var desc = $('#desc').val();
-    var price = $('#price').val();
+    var isbn_no = $('#book_id').val();
+    var name = $('#name').val().trim();
+    var desc = $('#desc').val().trim();
+    var author = $('#author').val().trim();  
+    var price = $('#price').val().trim();
     var category = $('#category').val();
     var existingImage = $('#existingImage').val();
     var newImage = $('#newImage')[0].files[0];
+
+    var isValid = true;
+
+    $('#nameHelp, #descHelp, #authorHelp, #priceHelp, #categoryHelp, #fileHelp').text('');
+
+  
+    if (name.length < 3 || name.length > 100) {
+        $('#nameHelp').text('Book name must be between 3 and 100 characters.');
+        isValid = false;
+    }
+    
+    if (desc.length < 10 || desc.length > 500) {
+        $('#descHelp').text('Description must be between 10 and 500 characters.');
+        isValid = false;
+    }
+
+    if (author.length < 3 || author.length > 50) {
+        $('#authorHelp').text('Author name must be between 3 and 50 characters.');
+        isValid = false;
+    }
+
+    if (price === '' || price <= 0 || isNaN(price)) {
+        $('#priceHelp').text('Price must be a positive number.');
+        isValid = false;
+    }
+
+    if (category === null || category === '') {
+        $('#categoryHelp').text('Please select a category.');
+        isValid = false;
+    }
+
+    if (!newImage && existingImage === '') {
+        $('#fileHelp').text('You must provide an image (existing or new).');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return false; 
+    }
+
     var fd = new FormData();
     fd.append('isbn_no', isbn_no);
     fd.append('name', name);
     fd.append('desc', desc);
+    fd.append('author', author);
     fd.append('price', price);
     fd.append('category', category);
     fd.append('existingImage', existingImage);
-    fd.append('newImage', newImage);
+
+    if (newImage) {
+        fd.append('newImage', newImage); 
+    }
 
     $.ajax({
         url: './controller/updateItemController.php',
@@ -358,12 +503,39 @@ function updateItems() {
         processData: false,
         contentType: false,
         success: function(data) {
-            alert('Data updated successfully.');
-            $('form').trigger('reset');
-            showBooks();
+            var response = JSON.parse(data);
+            alert(response.message);
+            showBooks(); 
+        },
+        error: function(xhr) {
+            var response = JSON.parse(xhr.responseText);
+            alert('Error: ' + response.message);
+            showBooks(); 
+        }
+    });
+
+    return false; 
+}
+
+function checkUnreadNotifications() {
+    $.ajax({
+        url: 'check_notifications.php', 
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data.count > 0) {
+                $('#notification-badge').text(data.count).show();
+            } else {
+                $('#notification-badge').hide();
+            }
+        },
+        error: function() {
+            console.error('Error fetching notifications');
         }
     });
 }
+
+
 
 // Function to delete an item
 function itemDelete(id) {
@@ -390,15 +562,13 @@ function itemDelete(id) {
     }
 }
 
-
-
 function categoryDelete(id) {
     if (confirm("Are you sure you want to delete this category?")) {
         $.ajax({
             url: "./controller/catDeleteController.php",
             method: "post",
             data: { record: id },
-            dataType: "json", // Expect a JSON response
+            dataType: "json", 
             success: function(response) {
                 if (response.status === "success") {
                     alert(response.message);
