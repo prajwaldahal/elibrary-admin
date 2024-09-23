@@ -248,6 +248,35 @@ function showIncome() {
   });
 }
 
+function showNotifications() {
+  $.ajax({
+      url: 'controller/notificationController.php',
+      method: 'Post',
+      dataType: 'json',
+      data: {'update':'true'},
+      success: function(data) {
+          console.log(data);
+          if (data.total_notifications > 0) {
+              $('#notification-badge').text(data.total_notifications).show();
+          } else {
+              $('#notification-badge').hide();
+          }
+      },
+      error: function(xhr) {
+          console.error('Error fetching notifications'+xhr.responseText);
+      }
+  });
+  $.ajax({
+    url: "./adminView/viewNotifications.php",
+    method: "post",
+    data: { record: 1 },
+    success: function (data) {
+      $(".allContent-section").html(data);
+    },
+  });
+}
+
+
 // Function to show categories
 function showCategory() {
   $.ajax({
@@ -524,23 +553,6 @@ function updateItems() {
   return false;
 }
 
-function checkUnreadNotifications() {
-  $.ajax({
-    url: "check_notifications.php",
-    method: "GET",
-    dataType: "json",
-    success: function (data) {
-      if (data.count > 0) {
-        $("#notification-badge").text(data.count).show();
-      } else {
-        $("#notification-badge").hide();
-      }
-    },
-    error: function () {
-      console.error("Error fetching notifications");
-    },
-  });
-}
 
 // Function to delete an item
 function itemDelete(id) {

@@ -31,7 +31,7 @@
     function checkUnreadNotifications() {
         $.ajax({
             url: 'controller/notificationController.php',
-            method: 'GET',
+            method: 'Post',
             dataType: 'json',
             success: function(data) {
                 console.log(data);
