@@ -250,23 +250,6 @@ function showIncome() {
 
 function showNotifications() {
   $.ajax({
-      url: 'controller/notificationController.php',
-      method: 'Post',
-      dataType: 'json',
-      data: {'update':'true'},
-      success: function(data) {
-          console.log(data);
-          if (data.total_notifications > 0) {
-              $('#notification-badge').text(data.total_notifications).show();
-          } else {
-              $('#notification-badge').hide();
-          }
-      },
-      error: function(xhr) {
-          console.error('Error fetching notifications'+xhr.responseText);
-      }
-  });
-  $.ajax({
     url: "./adminView/viewNotifications.php",
     method: "post",
     data: { record: 1 },
@@ -274,6 +257,19 @@ function showNotifications() {
       $(".allContent-section").html(data);
     },
   });
+  $.ajax({
+    url: 'controller/notificationController.php',
+    method: 'Post',
+    dataType: 'json',
+    data: {'update':'true'},
+    success: function(data) {
+        console.log(data);
+        $('#notification-badge').hide();
+    },
+    error: function(xhr) {
+        console.error('Error fetching notifications'+xhr.responseText);
+    }
+});
 }
 
 

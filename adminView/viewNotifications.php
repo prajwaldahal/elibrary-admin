@@ -1,24 +1,18 @@
 <style>
     .info {
-        background-color: #d1ecf1; /* Light blue */
+        background-color: #d1ecf1; 
     }
 
     .rented {
-        background-color: #d4edda; /* Light green */
+        background-color: #d4edda;
     }
 
     .expired {
-        background-color: #f8d7da; /* Light red */
+        background-color: #f8d7da;
     }
 
     .reported {
-        background-color: #fff3cd; /* Light yellow */
-    }
-
-    /* Optional: Add some padding and border to make it look cleaner */
-    td, th {
-        padding: 10px;
-        border: 1px solid #ddd;
+        background-color: #fff3cd;
     }
 </style>
 
@@ -35,11 +29,10 @@
     <tbody>
       <?php
       include_once "../config/dbconnect.php";
-      $sql = "SELECT * FROM admin_notification WHERE is_read=0 ORDER BY created_at DESC";
+      $sql = "SELECT * FROM admin_notification ORDER BY created_at DESC";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
-              // Get the notification type and assign the appropriate class
               $notification_type = $row["notification_type"];
               $class = '';
               
@@ -66,7 +59,7 @@
       <?php
           }
       } else {
-          echo "<tr><td colspan='8' class='text-center'>Sorry, no Notifications Available</td></tr>";
+          echo "<tr><td colspan='3' class='text-center'>Sorry, no new notifications are available</td></tr>";
       }
       ?>
     </tbody>

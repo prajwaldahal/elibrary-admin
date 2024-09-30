@@ -15,8 +15,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="text-center">ISBN No</th>
                 <th class="text-center">Image</th>
+                <th class="text-center">ISBN No</th>
                 <th class="text-center">Title</th>
                 <th class="text-center">Author</th>
                 <th class="text-center">Description</th>
@@ -126,9 +126,6 @@
         </div>
     </div>
 </div>
-
-<script src="../js/validation.js"></script>
-
 
 <style>
     .btn-success:hover {
