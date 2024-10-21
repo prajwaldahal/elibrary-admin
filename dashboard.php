@@ -1,3 +1,13 @@
+<?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(!isset($_SESSION['user'])){
+        echo "user is nt set";
+        header("Location: login.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +18,7 @@
     <link rel="stylesheet" href="./assets/css/style.css"></link>
 </head>
 <body>
-    
+
     <?php
         include "./adminHeader.php";
         include "./sidebar.php";
@@ -17,7 +27,7 @@
 
     <div id="main-content" class="container allContent-section py-4">
 
-            
+
         <div class="row mt-5">
             <div class="col-sm-3 mb-4">
                 <div class="card bg-dark text-white text-center shadow">
@@ -71,15 +81,15 @@
                         <h4>Total Orders</h4>
                         <h5>
                         <?php
-                            $sql="SELECT 
-                                COALESCE(SUM(total_orders), 0) AS total_orders 
-                                FROM 
-                                    ( 
-                                        SELECT COUNT(*) AS total_orders 
-                                        FROM rental_transactions 
-                                        UNION ALL 
-                                        SELECT COUNT(*) AS total_orders 
-                                        FROM rented_books_history 
+                            $sql="SELECT
+                                COALESCE(SUM(total_orders), 0) AS total_orders
+                                FROM
+                                    (
+                                        SELECT COUNT(*) AS total_orders
+                                        FROM rental_transactions
+                                        UNION ALL
+                                        SELECT COUNT(*) AS total_orders
+                                        FROM rented_books_history
                                     ) AS combined;
                                 ";
                             $result=$conn-> query($sql);
@@ -109,13 +119,13 @@
             </div>
         </div>
 
-    <script type="text/javascript" src="./assets/js/ajaxWork.js"></script>    
+    <script type="text/javascript" src="./assets/js/ajaxWork.js"></script>
     <script type="text/javascript" src="./assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
+
     <script>
         google.charts.load('current', { packages: ['corechart'] });
         google.charts.setOnLoadCallback( loadYearlyIncomeChart);

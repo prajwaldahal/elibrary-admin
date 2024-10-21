@@ -34,7 +34,7 @@
                 while ($row = $result->fetch_assoc()) {
             ?>
             <tr>
-                <td class="text-center align-middle"><img height='200px' src='<?= $row["cover_image"] ?>' alt="Book Cover"></td>
+                <td class="text-center align-middle"><img height='200px' src='uploads/<?= $row["cover_image"] ?>' alt="Book Cover"></td>
                 <td class="text-center align-middle"><?= $row["isbn_no"] ?></td>
                 <td class="text-center align-middle"><?= $row["title"] ?></td>
                 <td class="text-center align-middle"><?= $row["author"] ?></td>

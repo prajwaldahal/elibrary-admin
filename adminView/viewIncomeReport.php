@@ -77,8 +77,7 @@
     google.charts.setOnLoadCallback(initPage);
 
     function initPage() {
-        loadIncomeData();  
-        dateChange();      
+        loadIncomeData();     
     }
     $('#year').on('change', function() {
         loadMonthlyIncomeChart();  

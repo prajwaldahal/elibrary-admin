@@ -451,7 +451,6 @@ function addCategory() {
   return false;
 }
 
-// Function to show edit form for an item
 function itemEditForm(id) {
   if (confirm("Are you sure you want to edit this Book?")) {
     $.ajax({
@@ -461,12 +460,17 @@ function itemEditForm(id) {
       success: function (data) {
         $(".allContent-section").html(data);
       },
+      error: function (xhr) {
+        var response = JSON.parse(xhr.responseText);
+        alert("Error: " + response.message);
+        showBooks();
+      },
     });
   }
 }
 
 function updateItems() {
-  var isbn_no = $("#book_id").val();
+  var isbn_no = $("#isbn").val();
   var name = $("#name").val().trim();
   var desc = $("#desc").val().trim();
   var author = $("#author").val().trim();
@@ -481,6 +485,7 @@ function updateItems() {
     "#nameHelp, #descHelp, #authorHelp, #priceHelp, #categoryHelp, #fileHelp"
   ).text("");
 
+  if(isbn_no!= 13)
   if (name.length < 3 || name.length > 100) {
     $("#nameHelp").text("Book name must be between 3 and 100 characters.");
     isValid = false;
@@ -510,7 +515,7 @@ function updateItems() {
     $("#fileHelp").text("You must provide an image (existing or new).");
     isValid = false;
   }
-
+  console.log(isValid);
   if (!isValid) {
     return false;
   }
@@ -527,6 +532,9 @@ function updateItems() {
   if (newImage) {
     fd.append("newImage", newImage);
   }
+  for (var pair of fd.entries()) {
+    console.log(pair[0] + ', ' + pair[1]); 
+  }
 
   $.ajax({
     url: "./controller/updateItemController.php",
@@ -535,8 +543,7 @@ function updateItems() {
     processData: false,
     contentType: false,
     success: function (data) {
-      var response = JSON.parse(data);
-      alert(response.message);
+      alert(data.message);
       showBooks();
     },
     error: function (xhr) {
@@ -586,7 +593,7 @@ function categoryDelete(id) {
       dataType: "json",
       success: function (response) {
         if (response.status === "success") {
-          alert(response.message);
+          console.log(response);
           $("form").trigger("reset");
           showCategory();
         } else {
@@ -594,6 +601,7 @@ function categoryDelete(id) {
         }
       },
       error: function (xhr) {
+        console.log(xhr);
         var errorMessage = xhr.responseJSON
           ? xhr.responseJSON.message
           : "An error occurred while deleting the category.";

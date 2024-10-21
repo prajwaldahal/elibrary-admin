@@ -13,12 +13,15 @@ if (isset($_POST['upload'])) {
     $temp = $_FILES['file']['tmp_name'];
 
     $location = "./uploads/";
-    $image = $location . $name;
+    $image = $name;
 
-    $target_dir = "../uploads/";
-    $finalImage = $target_dir . $name;
+    $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary-admin/uploads/';
+    
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0755, true);
+    }
 
-    if (move_uploaded_file($temp, $finalImage)) {
+    if (move_uploaded_file($temp, $target_dir . $image)) {
         $insert_query = "INSERT INTO books 
         (isbn_no, title, cover_image, author, price, `description`, category_id, added_on) 
         VALUES ('$isbn', '$booksName', '$image', '$author', $price, '$desc', '$category', NOW())";
@@ -26,7 +29,6 @@ if (isset($_POST['upload'])) {
         $insert = mysqli_query($conn, $insert_query);
 
         if (!$insert) {
-            unlink($finalImage);
             http_response_code(500);
             echo json_encode(["status" => "error", "message" => "Internal Server Error"]);
         } else {

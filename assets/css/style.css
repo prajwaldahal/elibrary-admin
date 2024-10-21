@@ -7,6 +7,11 @@
     font-size: 18px;
 }
 
+/* .custom-input {
+    width: 70%; 
+    height: 40px; 
+} */
+
 .user-cart span {
     background-color: red;
     padding-right: 3px;

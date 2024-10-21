@@ -1,6 +1,6 @@
 <?php
 include_once "../config/dbconnect.php";
-$currentYear=Date('Y');
+$currentYear = date('Y');
 $selectedYear = isset($_POST['yearSelected']) ? $_POST['yearSelected'] : $currentYear;
 $chart = isset($_POST['chart']) ? $_POST['chart'] : false;
 $year = isset($_POST['year']) ? $_POST['year'] : false;
@@ -30,7 +30,8 @@ if ($chart && !$year) {
                 YEAR(rented_date) = $selectedYear
         ) AS combined
         GROUP BY
-            MONTH(date)
+            MONTH(date),
+            DATE_FORMAT(date, '%b')
         ORDER BY
             MONTH(date);
     "; 
@@ -40,11 +41,9 @@ if ($chart && !$year) {
         $data[] = $row;
     }
     echo json_encode($data);
-} 
-
-else if($chart && $year){
+} else if ($chart && $year) {
     $sql = "
-            SELECT 
+        SELECT 
             YEAR(date) AS year, 
             COALESCE(SUM(total_income), 0) AS total_income 
         FROM 
@@ -52,14 +51,15 @@ else if($chart && $year){
                 SELECT rental_date AS date,
                     amount_paid AS total_income 
                 FROM rental_transactions 
+
                 UNION ALL 
+
                 SELECT rented_date AS date,
                     price AS total_income 
                 FROM rented_books_history 
             ) AS combined 
         GROUP BY YEAR(date) 
         ORDER BY YEAR(date);
-
     "; 
     $result = $conn->query($sql);
     $data = [];
@@ -67,9 +67,7 @@ else if($chart && $year){
         $data[] = $row;
     }
     echo json_encode($data);
-}
-
-else {    
+} else {    
     $totalIncomeQuery = "
         SELECT COALESCE(SUM(amount), 0) AS total_income
         FROM (

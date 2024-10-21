@@ -1,10 +1,13 @@
 <?php
 $three_months = 7776000;
 session_set_cookie_params($three_months);
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+};
 include 'config/dbconnect.php';
 
 if (isset($_SESSION['user'])) {
+    echo $_SESSION['user'];
     header("Location: dashboard.php");
     exit();
 }
