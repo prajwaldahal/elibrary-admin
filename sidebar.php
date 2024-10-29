@@ -10,11 +10,12 @@
     <a href="./dashboard.php"><i class="fa fa-tachometer"></i> Dashboard</a>
     <a href="#income" onclick="showIncome()"><i class="fa fa-money"></i> Income</a>
     <a href="#books" onclick="showBooks()"><i class="fa fa-book"></i> Books</a>
+    <a href="#rentedbook" onclick="showRental()"><i class="fa fa-archive"></i> Rented Books</a>
+    <a href="#changePassword" onclick="showChangePassword()"><i class="fa fa-key"></i> Change Password</a>
     <a href="#notifications" id="notification-link" onclick="showNotifications()" class="notification">
         <i class="fa fa-bell"></i> Notification
         <span id="notification-badge" class="badge" style="display: none;"></span>
     </a>
-    <a href="#rentedbook" onclick="showRental()"><i class="fa fa-archive"></i> Rented Books</a>
     <a href="#requested" onclick="showRequested()"><i class="fa fa-paper-plane"></i> Requested Books</a>
     <a href="#customers" onclick="showCustomers()"><i class="fa fa-users"></i> Customers</a>
     <a href="#history" onclick="showHistory()"><i class="fa fa-history"></i> History</a>

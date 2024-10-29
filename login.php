@@ -2,12 +2,11 @@
 $three_months = 7776000;
 session_set_cookie_params($three_months);
 if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-};
+    session_start();
+}
 include 'config/dbconnect.php';
 
 if (isset($_SESSION['user'])) {
-    echo $_SESSION['user'];
     header("Location: dashboard.php");
     exit();
 }
@@ -16,13 +15,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM admin WHERE username = '$username' AND password = '$password'";
-    $result = mysqli_query($conn, $query);
+    $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (mysqli_num_rows($result) > 0) {
-        $_SESSION['user'] = $username;
-        header("Location: dashboard.php");
-        exit();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $username;
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "Invalid username or password.";
+        }
     } else {
         $error = "Invalid username or password.";
     }
@@ -47,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <h3>Login</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="assets\images\avatar.png" alt="Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px;">
+                        <img src="assets/images/avatar.png" alt="Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px;">
                         <?php if (isset($error)): ?>
                             <div class="alert alert-danger">
                                 <?= $error ?>

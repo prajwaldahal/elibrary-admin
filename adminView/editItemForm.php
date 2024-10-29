@@ -70,7 +70,7 @@
 
             <div class="form-group">
                 <label for="existingImage">Current Image:</label>
-                <img id="existingImage" src="../uploads/<?=$book['cover_image']?>" alt="Current Book Image" style="width: 150px; height: auto;">
+                <img id="existingImage" src="uploads/<?=$book['cover_image']?>" alt="Current Book Image" style="width: 150px; height: auto;">
                 <input type="hidden" name="existingImage" value="<?=$book['cover_image']?>">
             </div>
 

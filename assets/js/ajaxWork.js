@@ -297,6 +297,18 @@ function showCustomers() {
   });
 }
 
+function showChangePassword() {
+  $.ajax({
+    url: "./adminView/changePassword.php",
+    method: "post",
+    data: { record: 1 },
+    success: function (data) {
+      $(".allContent-section").html(data);
+    },
+  });
+}
+
+
 // Function to show rented books
 function showRental() {
   $.ajax({
@@ -320,6 +332,81 @@ function showHistory() {
     },
   });
 }
+
+//function to change thr password
+function changePassword() {
+  var currentPassword = $("#current_password").val().trim();
+  var newPassword = $("#new_password").val().trim();
+  var confirmPassword = $("#confirm_password").val().trim();
+
+  var isValid = true;
+
+  $("#currentPasswordHelp, #newPasswordHelp, #confirmPasswordHelp").text("");
+
+  if (currentPassword === "") {
+      $("#currentPasswordHelp").text("Current password is required.");
+      isValid = false;
+  }
+
+  
+  var hasUpperCase = false;
+  var hasLowerCase = false;
+  var hasDigit = false;
+  var hasSpecialChar = false;
+  var specialChars = "@$!%*?&~`-";
+
+  for (var i = 0; i < newPassword.length; i++) {
+      var char = newPassword[i];
+      if (char >= 'A' && char <= 'Z') hasUpperCase = true;
+      else if (char >= 'a' && char <= 'z') hasLowerCase = true;
+      else if (char >= '0' && char <= '9') hasDigit = true;
+      else if (specialChars.indexOf(char) !== -1) hasSpecialChar = true;
+  }
+
+  // if (newPassword.length < 8 || !hasUpperCase || !hasLowerCase || !hasDigit || !hasSpecialChar) {
+  //     $("#newPasswordHelp").text("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+  //     isValid = false;
+  // }
+
+  if (newPassword !== confirmPassword) {
+      $("#confirmPasswordHelp").text("New password and confirmation do not match.");
+      isValid = false;
+  }
+
+  if (!isValid) {
+      return false;
+  }
+
+  var fd = new FormData();
+  fd.append("current_password", currentPassword);
+  fd.append("new_password", newPassword);
+  fd.append("confirm_password", confirmPassword);
+  fd.append("change_password", "change_password");
+
+  $.ajax({
+      url: "./controller/changePasswordController.php",
+      method: "POST",
+      data: fd,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+          var data = JSON.parse(response);
+          if (data.status === "success") {
+              alert(data.message);
+              $("#changePasswordForm").trigger("reset");
+          } else {
+              alert("Error: " + data.message);
+          }
+      },
+      error: function(xhr) {
+          var data = JSON.parse(xhr.responseText);
+          alert("Error: " + data.message);
+      },
+  });
+
+  return false;
+}
+
 
 // Function to add books data
 function addItems() {
