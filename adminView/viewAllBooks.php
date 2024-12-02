@@ -110,9 +110,14 @@
                         <small id="categoryHelp" class="text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label for="file">Choose Image:</label>
+                        <label for="file">Choose Cover Image:</label>
                         <input type="file" class="form-control-file" name="file" id="file" required>
                         <small id="fileHelp" class="text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookFile">Choose Book File:</label>
+                        <input type="file" class="form-control-file" name="book_file" id="bookFile" required>
+                        <small id="bookFileHelp" class="text-danger"></small>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-secondary" name="upload"  style="border-radius: 15px;  font-weight: bold; 

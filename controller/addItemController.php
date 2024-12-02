@@ -9,35 +9,55 @@ if (isset($_POST['upload'])) {
     $category = $_POST['category'];
     $author = $_POST['author'];
 
-    $name = $_FILES['file']['name'];
-    $temp = $_FILES['file']['tmp_name'];
+    $coverImage = $_FILES['file']['name'];
+    $coverTemp = $_FILES['file']['tmp_name'];
 
-    $location = "./uploads/";
-    $image = $name;
+    $bookFile = $_FILES['book_file']['name'];
+    $bookTemp = $_FILES['book_file']['tmp_name'];
 
-    $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary-admin/uploads/';
-    
-    if (!is_dir($target_dir)) {
-        mkdir($target_dir, 0755, true);
+    $coverImageLocation = "./uploads/";
+    $bookFileLocation = "./book_files/";
+
+    $targetCoverDir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/uploads/';
+    $targetBookDir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/book_files/';
+
+    if (!is_dir($targetCoverDir)) {
+        mkdir($targetCoverDir, 0755, true);
     }
 
-    if (move_uploaded_file($temp, $target_dir . $image)) {
-        $insert_query = "INSERT INTO books 
-        (isbn_no, title, cover_image, author, price, `description`, category_id, added_on) 
-        VALUES ('$isbn', '$booksName', '$image', '$author', $price, '$desc', '$category', NOW())";
+    if (!is_dir($targetBookDir)) {
+        mkdir($targetBookDir, 0755, true);
+    }
 
-        $insert = mysqli_query($conn, $insert_query);
+    // Handle cover image upload
+    if (move_uploaded_file($coverTemp, $targetCoverDir . $coverImage)) {
+        // Handle book file upload (only PDF allowed)
+        if (strtolower(pathinfo($bookFile, PATHINFO_EXTENSION)) === 'pdf') {
+            if (move_uploaded_file($bookTemp, $targetBookDir . $bookFile)) {
+                $insert_query = "INSERT INTO books 
+                (isbn_no, title, cover_image, author, price, `description`, category_id, book_file, added_on) 
+                VALUES ('$isbn', '$booksName', '$coverImage', '$author', $price, '$desc', '$category', '$bookFile', NOW())";
 
-        if (!$insert) {
-            http_response_code(500);
-            echo json_encode(["status" => "error", "message" => "Internal Server Error"]);
+                $insert = mysqli_query($conn, $insert_query);
+
+                if (!$insert) {
+                    http_response_code(500);
+                    echo json_encode(["status" => "error", "message" => "Internal Server Error"]);
+                } else {
+                    http_response_code(200);
+                    echo json_encode(["status" => "success", "message" => "Records added successfully."]);
+                }
+            } else {
+                http_response_code(500);
+                echo json_encode(["status" => "error", "message" => "Failed to upload book file."]);
+            }
         } else {
-            http_response_code(200);
-            echo json_encode(["status" => "success", "message" => "Records added successfully."]);
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "Only PDF files are allowed for the book file."]);
         }
     } else {
         http_response_code(500);
-        echo json_encode(["status" => "error", "message" => "Failed to upload file."]);
+        echo json_encode(["status" => "error", "message" => "Failed to upload cover image."]);
     }
 } else {
     http_response_code(400);

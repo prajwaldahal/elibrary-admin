@@ -418,12 +418,11 @@ function addItems() {
   var category = $("#category").val();
   var author = $("#author").val().trim();
   var file = $("#file")[0].files[0];
+  var bookFile = $("#bookFile")[0].files[0];
 
   var isValid = true;
 
-  $(
-    "#isbnHelp, #nameHelp, #priceHelp, #descHelp, #authorHelp, #categoryHelp, #fileHelp"
-  ).text("");
+  $( "#isbnHelp, #nameHelp, #priceHelp, #descHelp, #authorHelp, #categoryHelp, #fileHelp, #bookFileHelp" ).text("");
 
   if (isbn === "" || !/^\d{13}$/.test(isbn)) {
     $("#isbnHelp").text("ISBN must be exactly 13 digits.");
@@ -460,6 +459,17 @@ function addItems() {
     isValid = false;
   }
 
+  if (!bookFile) {
+    $("#bookFileHelp").text("Book file (PDF) is required.");
+    isValid = false;
+  }
+
+  var validBookFileType = 'application/pdf';
+  if (bookFile && bookFile.type !== validBookFileType) {
+    $("#bookFileHelp").text("Invalid book file type. Only PDF files are allowed.");
+    isValid = false;
+  }
+
   if (!isValid) {
     return false;
   }
@@ -472,6 +482,7 @@ function addItems() {
   fd.append("category", category);
   fd.append("author", author);
   fd.append("file", file);
+  fd.append("book_file", bookFile);
   fd.append("upload", upload);
 
   $.ajax({
@@ -484,10 +495,10 @@ function addItems() {
       var data = JSON.parse(response);
       if (data.status === "success") {
         $("#bookForm").trigger("reset");
-        $("#myModal").modal("hide"); // Close modal
+        $("#myModal").modal("hide");
         $(".modal-backdrop").remove();
         alert(data.message);
-        showBooks(); // Refresh book list
+        showBooks();
       }
     },
     error: function (xhr) {
@@ -502,6 +513,7 @@ function addItems() {
 
   return false;
 }
+
 
 function addCategory() {
   var upload = "upload";
