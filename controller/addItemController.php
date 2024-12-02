@@ -19,7 +19,7 @@ if (isset($_POST['upload'])) {
     $bookFileLocation = "./book_files/";
 
     $targetCoverDir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/uploads/';
-    $targetBookDir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/book_files/';
+    $targetBookDir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/uploads/file';
 
     if (!is_dir($targetCoverDir)) {
         mkdir($targetCoverDir, 0755, true);
@@ -29,9 +29,8 @@ if (isset($_POST['upload'])) {
         mkdir($targetBookDir, 0755, true);
     }
 
-    // Handle cover image upload
     if (move_uploaded_file($coverTemp, $targetCoverDir . $coverImage)) {
-        // Handle book file upload (only PDF allowed)
+        
         if (strtolower(pathinfo($bookFile, PATHINFO_EXTENSION)) === 'pdf') {
             if (move_uploaded_file($bookTemp, $targetBookDir . $bookFile)) {
                 $insert_query = "INSERT INTO books 
