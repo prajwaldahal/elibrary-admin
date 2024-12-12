@@ -15,6 +15,12 @@ function getRequestBody() {
 switch ($requestMethod) {
     case 'POST':
         switch ($pathParts[2]) {
+            case 'user':
+                if ($pathParts[3] === 'register') {
+                    $data = getRequestBody();
+                    registerUser($data);
+                }
+                break;
             case 'review':
                 if ($pathParts[3] === 'insert') {
                     $data = getRequestBody();
@@ -44,6 +50,8 @@ switch ($requestMethod) {
             case 'rental':
                 if ($pathParts[3] === 'history' && isset($_GET['user_id'])) {
                     getHistoryById($_GET['user_id']);
+                } elseif ($pathParts[3] === 'books' && isset($_GET['user_id'])) {
+                    getRentedBooks($_GET['user_id']);
                 } else {
                     echo json_encode(["error" => "User ID (user_id) is missing in query parameters"]);
                 }

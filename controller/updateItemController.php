@@ -10,7 +10,7 @@ $category = trim($_POST['category']);
 $image = trim($_POST['existingImage']);
 
 if (isset($_FILES['newImage']) && $_FILES['newImage']['error'] === 0) {
-    $dir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary-admin/uploads/';
+    $dir = $_SERVER['DOCUMENT_ROOT'] . '/elibrary/uploads/';
     
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);

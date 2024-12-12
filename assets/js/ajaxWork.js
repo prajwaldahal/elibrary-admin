@@ -363,10 +363,10 @@ function changePassword() {
       else if (specialChars.indexOf(char) !== -1) hasSpecialChar = true;
   }
 
-  // if (newPassword.length < 8 || !hasUpperCase || !hasLowerCase || !hasDigit || !hasSpecialChar) {
-  //     $("#newPasswordHelp").text("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
-  //     isValid = false;
-  // }
+  if (newPassword.length < 8 || !hasUpperCase || !hasLowerCase || !hasDigit || !hasSpecialChar) {
+      $("#newPasswordHelp").text("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+      isValid = false;
+  }
 
   if (newPassword !== confirmPassword) {
       $("#confirmPasswordHelp").text("New password and confirmation do not match.");

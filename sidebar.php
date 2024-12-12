@@ -16,7 +16,7 @@
         <i class="fa fa-bell"></i> Notification
         <span id="notification-badge" class="badge" style="display: none;"></span>
     </a>
-    <a href="#requested" onclick="showRequested()"><i class="fa fa-paper-plane"></i> Requested Books</a>
+    <!-- <a href="#requested" onclick="showRequested()"><i class="fa fa-paper-plane"></i> Requested Books</a> -->
     <a href="#customers" onclick="showCustomers()"><i class="fa fa-users"></i> Customers</a>
     <a href="#history" onclick="showHistory()"><i class="fa fa-history"></i> History</a>
     <a href="#category" onclick="showCategory()"><i class="fa fa-tags"></i> Categories</a>

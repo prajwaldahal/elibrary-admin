@@ -7,7 +7,7 @@
         <th class="text-center">Name</th>
         <th class="text-center">Email</th>
         <th class="text-center">Joining Date</th>
-        <th class="text-center">last_login</th>
+  
       </tr>
     </thead>
     <?php
@@ -23,7 +23,6 @@
       <td><?=$row["full_name"]?></td>
       <td><?=$row["email"]?></td>
       <td><?=$row["registration_date"]?></td>
-      <td><?=$row["last_login"]?></td>
     </tr>
     <?php
            
