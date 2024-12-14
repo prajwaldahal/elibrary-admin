@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 05, 2024 at 02:52 AM
+-- Generation Time: Dec 14, 2024 at 08:30 AM
 -- Server version: 8.4.2
 -- PHP Version: 8.1.10
 
@@ -31,7 +31,7 @@ USE `db_elibrary`;
 
 CREATE TABLE `admin` (
   `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+  `password` varchar(62) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`username`, `password`) VALUES
-('admin', 'pwd');
+('admin', '$2y$10$F8Jli5gAoWKGqA9CdRzrjObJkhvC45tUgkVg3syWs1SHLKCGsQ5Nq');
 
 -- --------------------------------------------------------
 
@@ -91,7 +91,82 @@ INSERT INTO `admin_notification` (`id`, `notification_type`, `message`, `user_id
 (123618, 'expired', 'Rental transaction for book ISBN 9780134494165 has expired for user ID10001', '10001', '2024-09-23 08:40:45', 1),
 (123619, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID10006', '10006', '2024-09-23 08:40:45', 1),
 (123620, 'info', 'A new user10011 has been registerd ', '10011', '2024-09-23 08:45:34', 1),
-(123621, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID 10007', '10007', '2024-09-23 08:58:25', 1);
+(123621, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID 10007', '10007', '2024-09-23 08:58:25', 1),
+(123622, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10003', '10003', '2024-10-05 16:26:05', 1),
+(123623, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10009', '10009', '2024-10-05 16:26:05', 1),
+(123624, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10008', '10008', '2024-10-05 16:26:05', 1),
+(123625, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10010', '10010', '2024-10-05 16:26:05', 1),
+(123626, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10002', '10002', '2024-10-05 16:26:05', 1),
+(123627, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10005', '10005', '2024-10-05 16:26:05', 1),
+(123628, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10007', '10007', '2024-10-05 16:26:05', 1),
+(123629, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10005', '10005', '2024-10-05 16:26:05', 1),
+(123630, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10006', '10006', '2024-10-05 16:26:05', 1),
+(123631, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10009', '10009', '2024-10-05 16:26:05', 1),
+(123632, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID 10008', '10008', '2024-10-05 16:26:05', 1),
+(123633, 'info', 'A new user jfcAcsnfwKP3ccsnURwvx8TKV0w2 has been registerd ', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:11:14', 1),
+(123634, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:42:37', 1),
+(123635, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:42:37', 1),
+(123636, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:49:47', 1),
+(123637, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:49:47', 1),
+(123638, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:50:21', 1),
+(123639, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:55:52', 1),
+(123640, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 06:55:52', 1),
+(123641, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:01:51', 1),
+(123642, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:01:51', 1),
+(123643, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:13:03', 1),
+(123644, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:13:03', 1),
+(123645, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:14:48', 1),
+(123646, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:14:48', 1),
+(123647, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:17:00', 1),
+(123648, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:17:00', 1),
+(123649, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:18:33', 1),
+(123650, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:18:33', 1),
+(123651, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:21:41', 1),
+(123652, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:21:41', 1),
+(123653, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:28:08', 1),
+(123654, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:28:08', 1),
+(123655, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:30:56', 1),
+(123656, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:30:56', 1),
+(123657, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:42', 1),
+(123658, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:49', 1),
+(123659, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:51', 1),
+(123660, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:53', 1),
+(123661, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:55', 1),
+(123662, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:56', 1),
+(123663, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:31:58', 1),
+(123664, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:00', 1),
+(123665, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:01', 1),
+(123666, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:03', 1),
+(123667, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:05', 1),
+(123668, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:07', 1),
+(123669, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:09', 1),
+(123670, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:11', 1),
+(123671, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:13', 1),
+(123672, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:15', 1),
+(123673, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:17', 1),
+(123674, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:19', 1),
+(123675, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:21', 1),
+(123676, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:23', 1),
+(123677, 'expired', 'Rental transaction for book ISBN 9780134685991 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:32:37', 1),
+(123678, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:33:30', 1),
+(123679, 'rented', 'A book with ISBN 9780132350884 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:33:30', 1),
+(123680, 'rented', 'A book with ISBN 9781491950357 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:34:50', 1),
+(123681, 'rented', 'A book with ISBN 9781491950357 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-05 07:34:50', 1),
+(123682, 'rented', 'A book with ISBN 9780134177304 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:05:43', 1),
+(123683, 'rented', 'A book with ISBN 9780134177304 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:05:43', 1),
+(123684, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:09:46', 1),
+(123685, 'expired', 'Rental transaction for book ISBN 9780132350884 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:10:09', 1),
+(123686, 'expired', 'Rental transaction for book ISBN 9781491950357 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:10:19', 1),
+(123687, 'rented', 'A book with ISBN 9780134757590 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:15:22', 1),
+(123688, 'rented', 'A book with ISBN 9780134757590 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:15:22', 1),
+(123689, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:29:40', 1),
+(123690, 'rented', 'A book with ISBN 9780134685991 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:29:40', 1),
+(123691, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:42:01', 1),
+(123692, 'rented', 'A book with ISBN 9780134177304 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:42:42', 1),
+(123693, 'expired', 'Rental transaction for book ISBN 9780134177304 has expired for user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-06 02:42:47', 1),
+(123694, 'info', 'A new user 8UuhIkPqeGgbtNLGKkcdHL8nha33 has been registerd ', '8UuhIkPqeGgbtNLGKkcdHL8nha33', '2024-12-06 10:55:08', 1),
+(123695, 'rented', 'A book with ISBN 9781234567895 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-09 16:20:15', 1),
+(123696, 'rented', 'A book with ISBN 9781234567895 has been rented by user ID jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '2024-12-09 16:20:15', 1);
 
 -- --------------------------------------------------------
 
@@ -107,6 +182,7 @@ CREATE TABLE `books` (
   `price` decimal(10,2) DEFAULT NULL,
   `cover_image` text,
   `description` text,
+  `book_file` varchar(100) NOT NULL,
   `added_on` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -115,17 +191,20 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`isbn_no`, `title`, `author`, `category_id`, `price`, `cover_image`, `description`, `added_on`, `is_deleted`) VALUES
-('9780132350884', 'Clean Code', 'Robert C. Martin', 2, 29.90, '708338.png', 'A Handbook of Agile Software Craftsmanship', '2024-09-21 20:15:29', 0),
-('9780134177304', 'Design Patterns', 'Erich Gamma', 2, 50.00, NULL, 'Elements of Reusable Object-Oriented Software', '2024-09-21 20:15:29', 0),
-('9780134494165', 'The Clean Coder', 'Robert C. Martin', 2, 34.99, NULL, 'A Code of Conduct for Professional Programmers', '2024-09-21 20:15:29', 0),
-('9780134685991', 'Effective Java', 'Joshua Bloch', 2, 45.00, NULL, 'A Programming Language Guide', '2024-09-21 20:15:29', 0),
-('9780134757590', 'Java Concurrency in Practice', 'Brian Goetz', 2, 49.99, NULL, 'Build Multi-Threaded Applications', '2024-09-21 20:15:29', 0),
-('9780136142510', 'Code Complete', 'Steve McConnell', 2, 39.99, NULL, 'A Practical Handbook of Software Construction', '2024-09-21 20:15:29', 0),
-('9780201616224', 'The Pragmatic Programmer', 'Andrew Hunt', 2, 39.99, NULL, 'Your Journey To Mastery', '2024-09-21 20:15:29', 0),
-('9780321573513', 'Refactoring', 'Martin Fowler', 2, 44.99, NULL, 'Improving the Design of Existing Code', '2024-09-21 20:15:29', 0),
-('9781491946008', 'JavaScript: The Good Parts', 'Douglas Crockford', 2, 20.00, NULL, 'Unearthing the Excellence in JavaScript', '2024-09-21 20:15:29', 0),
-('9781491950357', 'You Don\'t Know JS', 'Kyle Simpson', 2, 25.00, NULL, 'Scope & Closures', '2024-09-21 20:15:29', 0);
+INSERT INTO `books` (`isbn_no`, `title`, `author`, `category_id`, `price`, `cover_image`, `description`, `book_file`, `added_on`, `is_deleted`) VALUES
+('9780132350884', 'Clean Code', 'Robert C. Martin', 2, 29.00, '67527507ebd478.11001308.png', 'A Handbook of Agile Software', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780134177304', 'Design Patterns', 'Erich Gamma', 2, 50.00, 'js.jpeg', 'Elements of Reusable Object-Oriented Software', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780134494165', 'The Clean Coder', 'Robert C. Martin', 2, 34.99, 'js.jpeg', 'A Code of Conduct for Professional Programmers', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780134685991', 'Effective Java', 'Joshua Bloch', 2, 45.00, 'js.jpeg', 'A Programming Language Guide', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780134757590', 'Java Concurrency in Practice', 'Brian Goetz', 2, 49.99, 'js.jpeg', 'Build Multi-Threaded Applications', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780136142510', 'Code Complete', 'Steve McConnell', 2, 39.99, 'js.jpeg', 'A Practical Handbook of Software Construction', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780201616224', 'The Pragmatic Programmer', 'Andrew Hunt', 2, 39.99, 'js.jpeg', 'Your Journey To Mastery', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9780321573513', 'Refactoring', 'Martin Fowler', 2, 44.99, 'js.jpeg', 'Improving the Design of Existing Code', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9781234567111', 'Java in  a nushell', 'auth1', 2, 22.00, 'js.jpeg', 'Core java dconcepts', 'xyz.pdf', '2024-11-20 15:15:21', 1),
+('9781234567890', 'java in a nutshell', 'auth 1', 3, 99.00, '81I8l93XEUL.jpeg', 'Core java book handy book for beginners', 'xyz.pdf', '2024-11-20 15:21:08', 1),
+('9781234567895', 'Seatplanner', 'Auth 1', 3, 25.00, '67527552d6c1d6.76760614.png', 'seatplanner project is 4th se academic project of BCA', 'prajwal.pdf', '2024-12-06 03:38:03', 0),
+('9781491946008', 'JavaScript: The Good Parts', 'Douglas Crockford', 2, 20.00, 'js.jpeg', 'Unearthing the Excellence in JavaScript', 'xyz.pdf', '2024-09-21 20:15:29', 0),
+('9781491950357', 'You Don\'t Know JS', 'Kyle Simpson', 2, 25.00, 'js.jpeg', 'Scope & Closures', 'xyz.pdf', '2024-09-21 20:15:29', 0);
 
 --
 -- Triggers `books`
@@ -169,7 +248,8 @@ INSERT INTO `categories` (`id`, `category_name`, `is_deleted`) VALUES
 (7, 'Mystery', 0),
 (8, 'Romance', 0),
 (9, 'Self-Help', 0),
-(10, 'Cookbooks', 0);
+(10, 'Cookbooks', 0),
+(28, 'add', 1);
 
 -- --------------------------------------------------------
 
@@ -225,7 +305,6 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61725, '10001', '9780321573513', '2022-02-28', '2025-04-15', 57.68),
 (61726, '10002', '9781491946008', '2023-10-20', '2025-10-31', 261.78),
 (61727, '10001', '9780321573513', '2022-11-12', '2025-08-09', 211.52),
-(61728, '10003', '9780134177304', '2024-04-15', '2024-12-18', 148.08),
 (61730, '10010', '9780134685991', '2024-04-29', '2025-07-14', 239.50),
 (61731, '10005', '9780134685991', '2023-09-24', '2025-02-22', 100.47),
 (61732, '10007', '9780134757590', '2023-03-22', '2025-02-14', 162.49),
@@ -237,7 +316,6 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61740, '10003', '9780132350884', '2024-03-12', '2025-09-28', 160.59),
 (61742, '10005', '9781491946008', '2022-04-28', '2025-09-02', 75.70),
 (61743, '10003', '9780201616224', '2023-08-25', '2025-07-14', 219.14),
-(61746, '10009', '9780134177304', '2023-02-08', '2025-06-20', 251.01),
 (61747, '10007', '9781491946008', '2023-05-06', '2025-09-07', 204.79),
 (61748, '10006', '9780134685991', '2023-02-08', '2025-01-19', 66.01),
 (61749, '10008', '9780136142510', '2024-03-12', '2025-07-20', 247.14),
@@ -248,7 +326,6 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61756, '10009', '9780134685991', '2022-04-11', '2025-02-19', 173.74),
 (61757, '10010', '9780132350884', '2024-02-20', '2025-06-19', 258.84),
 (61759, '10002', '9780136142510', '2022-03-02', '2025-06-03', 189.97),
-(61760, '10008', '9780134177304', '2023-05-04', '2025-01-21', 199.80),
 (61761, '10005', '9780201616224', '2023-02-22', '2025-06-30', 266.80),
 (61762, '10004', '9781491946008', '2023-08-20', '2024-12-12', 267.79),
 (61763, '10001', '9781491950357', '2024-04-30', '2025-04-24', 144.94),
@@ -268,13 +345,11 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61780, '10007', '9780134685991', '2024-08-21', '2025-11-14', 76.24),
 (61781, '10002', '9780321573513', '2023-07-08', '2025-11-14', 281.80),
 (61782, '10007', '9780134494165', '2022-09-10', '2025-12-10', 73.18),
-(61783, '10010', '9780134177304', '2022-10-14', '2024-12-29', 163.71),
 (61786, '10003', '9781491946008', '2022-10-26', '2025-05-02', 128.43),
 (61788, '10006', '9780132350884', '2024-07-14', '2025-12-20', 274.41),
 (61789, '10003', '9780201616224', '2023-04-19', '2025-10-14', 135.56),
 (61790, '10007', '9780134685991', '2023-10-14', '2025-05-04', 158.28),
 (61791, '10001', '9781491950357', '2023-02-13', '2025-10-21', 242.56),
-(61793, '10002', '9780134177304', '2023-12-02', '2025-04-02', 133.92),
 (61794, '10003', '9781491946008', '2023-10-30', '2025-10-10', 238.65),
 (61795, '10009', '9780134757590', '2024-01-27', '2025-02-21', 237.20),
 (61796, '10003', '9780321573513', '2022-06-27', '2025-11-13', 173.77),
@@ -301,17 +376,14 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61820, '10003', '9780201616224', '2022-10-12', '2024-11-29', 68.74),
 (61821, '10007', '9781491946008', '2024-08-11', '2025-01-14', 57.57),
 (61822, '10008', '9780132350884', '2022-09-13', '2024-12-18', 100.95),
-(61823, '10005', '9780134177304', '2024-08-15', '2025-12-02', 173.23),
 (61824, '10004', '9781491950357', '2022-09-28', '2025-05-14', 255.56),
 (61825, '10007', '9780134494165', '2022-12-28', '2025-12-23', 250.34),
 (61826, '10005', '9780321573513', '2024-08-02', '2025-05-15', 224.57),
 (61827, '10005', '9781491950357', '2024-06-15', '2025-03-15', 268.58),
 (61828, '10009', '9781491950357', '2023-09-24', '2025-08-02', 233.17),
-(61829, '10007', '9780134177304', '2023-01-09', '2024-11-27', 220.60),
 (61830, '10008', '9780132350884', '2023-09-06', '2025-09-23', 115.45),
 (61831, '10010', '9780136142510', '2024-07-14', '2025-05-27', 110.64),
 (61832, '10010', '9780134494165', '2022-05-02', '2025-12-26', 84.94),
-(61833, '10005', '9780134177304', '2024-07-31', '2025-12-15', 222.49),
 (61834, '10008', '9780134494165', '2022-06-09', '2024-11-30', 267.55),
 (61835, '10005', '9780134494165', '2023-02-16', '2025-01-17', 95.39),
 (61836, '10008', '9781491950357', '2023-04-24', '2025-10-01', 208.24),
@@ -321,7 +393,6 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61841, '10004', '9781491950357', '2022-03-29', '2025-09-06', 140.89),
 (61842, '10010', '9780134685991', '2023-11-02', '2025-07-15', 247.17),
 (61843, '10009', '9780321573513', '2024-04-19', '2025-03-10', 211.07),
-(61844, '10006', '9780134177304', '2023-04-02', '2025-09-08', 69.39),
 (61845, '10005', '9781491946008', '2022-10-19', '2025-10-11', 281.09),
 (61846, '10008', '9780134494165', '2023-04-19', '2025-03-22', 243.00),
 (61847, '10006', '9780132350884', '2022-07-11', '2025-09-09', 209.37),
@@ -338,13 +409,19 @@ INSERT INTO `rental_transactions` (`id`, `user_id`, `isbn_no`, `rental_date`, `e
 (61863, '10009', '9780134494165', '2022-10-30', '2025-06-15', 276.35),
 (61864, '10006', '9781491950357', '2022-09-14', '2025-11-27', 284.15),
 (61865, '10010', '9780134494165', '2022-06-09', '2025-12-11', 67.64),
-(61866, '10009', '9780134177304', '2024-05-27', '2025-03-15', 111.03),
 (61867, '10006', '9781491950357', '2023-05-31', '2025-01-25', 114.72),
-(61868, '10008', '9780134177304', '2024-01-22', '2025-11-28', 105.40),
 (61869, '10007', '9780132350884', '2024-02-07', '2025-08-19', 174.01),
 (61870, '10007', '9780321573513', '2023-08-04', '2025-10-07', 220.94),
 (61871, '10009', '9780321573513', '2022-03-13', '2025-10-30', 129.28),
-(61872, '10010', '9780136142510', '2024-03-26', '2025-10-31', 246.83);
+(61872, '10010', '9780136142510', '2024-03-26', '2025-10-31', 246.83),
+(61895, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-31', 25.13),
+(61898, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9781491950357', '2024-12-05', '2024-12-23', 15.00),
+(61901, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134757590', '2024-12-06', '2024-12-31', 41.65),
+(61902, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134757590', '2024-12-06', '2024-12-31', 41.65),
+(61903, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-06', '2024-12-15', 13.50),
+(61904, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-06', '2024-12-15', 13.50),
+(61906, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9781234567895', '2024-12-09', '2024-12-25', 13.33),
+(61907, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9781234567895', '2024-12-09', '2024-12-25', 13.33);
 
 --
 -- Triggers `rental_transactions`
@@ -420,7 +497,45 @@ INSERT INTO `rented_books_history` (`id`, `user_id`, `isbn_no`, `rented_date`, `
 (61885, '10004', '9780134177304', '2022-07-30', '2024-11-21', 210.94),
 (61886, '10001', '9780134494165', '2022-10-24', '2024-11-26', 186.18),
 (61887, '10006', '9780132350884', '2022-11-11', '2024-11-27', 236.95),
-(61888, '10007', '9780132350884', '2022-11-16', '2025-06-20', 220.63);
+(61888, '10007', '9780132350884', '2022-11-16', '2025-06-20', 220.63),
+(61889, '10003', '9780134177304', '2024-04-15', '2024-12-18', 148.08),
+(61890, '10009', '9780134177304', '2023-02-08', '2025-06-20', 251.01),
+(61891, '10008', '9780134177304', '2023-05-04', '2025-01-21', 199.80),
+(61892, '10010', '9780134177304', '2022-10-14', '2024-12-29', 163.71),
+(61893, '10002', '9780134177304', '2023-12-02', '2025-04-02', 133.92),
+(61894, '10005', '9780134177304', '2024-08-15', '2025-12-02', 173.23),
+(61895, '10007', '9780134177304', '2023-01-09', '2024-11-27', 220.60),
+(61896, '10005', '9780134177304', '2024-07-31', '2025-12-15', 222.49),
+(61897, '10006', '9780134177304', '2023-04-02', '2025-09-08', 69.39),
+(61898, '10009', '9780134177304', '2024-05-27', '2025-03-15', 111.03),
+(61899, '10008', '9780134177304', '2024-01-22', '2025-11-28', 105.40),
+(61900, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-24', 18.36),
+(61901, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-24', 18.36),
+(61902, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-25', 19.33),
+(61903, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-31', 39.00),
+(61904, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-31', 39.00),
+(61905, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-18', 12.56),
+(61906, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-15', 15.00),
+(61907, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-30', 37.50),
+(61908, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-30', 37.50),
+(61909, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-30', 37.50),
+(61910, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-31', 25.13),
+(61911, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-31', 39.00),
+(61912, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-15', 15.00),
+(61913, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-31', 39.00),
+(61914, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-12', 20.00),
+(61915, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-12', 20.00),
+(61916, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-25', 19.33),
+(61917, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-31', 25.13),
+(61918, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-25', 19.33),
+(61919, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-25', 19.33),
+(61920, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-18', 12.56),
+(61921, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134685991', '2024-12-05', '2024-12-30', 37.50),
+(61922, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134177304', '2024-12-06', '2024-12-31', 41.66),
+(61923, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780132350884', '2024-12-05', '2024-12-31', 25.13),
+(61924, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9781491950357', '2024-12-05', '2024-12-23', 15.00),
+(61925, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134177304', '2024-12-06', '2024-12-31', 41.66),
+(61926, 'jfcAcsnfwKP3ccsnURwvx8TKV0w2', '9780134177304', '2024-12-16', '2024-12-01', 44.15);
 
 -- --------------------------------------------------------
 
@@ -464,7 +579,6 @@ CREATE TABLE `reviews` (
   `user_id` varchar(50) DEFAULT NULL,
   `isbn_no` varchar(13) DEFAULT NULL,
   `rating` tinyint NOT NULL,
-  `comment` text,
   `review_date` date NOT NULL
 ) ;
 
@@ -472,17 +586,17 @@ CREATE TABLE `reviews` (
 -- Dumping data for table `reviews`
 --
 
-INSERT INTO `reviews` (`id`, `user_id`, `isbn_no`, `rating`, `comment`, `review_date`) VALUES
-(1, '10001', '9780132350884', 5, 'An essential read for all developers.', '2024-01-05'),
-(2, '10002', '9780201616224', 4, 'Great insights into programming.', '2024-01-06'),
-(3, '10003', '9780134685991', 5, 'Best Java book available.', '2024-01-07'),
-(4, '10004', '9780134494165', 3, 'Good, but a bit repetitive.', '2024-01-08'),
-(5, '10005', '9780134757590', 4, 'Very helpful for understanding concurrency.', '2024-01-09'),
-(6, '10006', '9780134177304', 5, 'A must-read for every developer.', '2024-01-10'),
-(7, '10007', '9781491950357', 5, 'JavaScript concepts explained well.', '2024-01-11'),
-(8, '10008', '9781491946008', 4, 'A good introduction to JavaScript.', '2024-01-12'),
-(9, '10009', '9780136142510', 5, 'Comprehensive coverage of software construction.', '2024-01-13'),
-(10, '10010', '9780321573513', 4, 'Useful techniques for refactoring.', '2024-01-14');
+INSERT INTO `reviews` (`id`, `user_id`, `isbn_no`, `rating`, `review_date`) VALUES
+(1, '10001', '9780132350884', 5, '2024-01-05'),
+(2, '10002', '9780201616224', 4, '2024-01-06'),
+(3, '10003', '9780134685991', 5, '2024-01-07'),
+(4, '10004', '9780134494165', 3, '2024-01-08'),
+(5, '10005', '9780134757590', 4, '2024-01-09'),
+(6, '10006', '9780134177304', 5, '2024-01-10'),
+(7, '10007', '9781491950357', 5, '2024-01-11'),
+(8, '10008', '9781491946008', 4, '2024-01-12'),
+(9, '10009', '9780136142510', 5, '2024-01-13'),
+(10, '10010', '9780321573513', 4, '2024-01-14');
 
 -- --------------------------------------------------------
 
@@ -494,26 +608,28 @@ CREATE TABLE `users` (
   `id` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `full_name` varchar(100) DEFAULT NULL,
-  `registration_date` date NOT NULL,
-  `last_login` datetime DEFAULT NULL
+  `photourl` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `registration_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `full_name`, `registration_date`, `last_login`) VALUES
-('10001', 'user1@example.com', 'User One', '2024-01-01', NULL),
-('10002', 'user2@example.com', 'User Two', '2024-01-02', NULL),
-('10003', 'user3@example.com', 'User Three', '2024-01-03', NULL),
-('10004', 'user4@example.com', 'User Four', '2024-01-04', NULL),
-('10005', 'user5@example.com', 'User Five', '2024-01-05', NULL),
-('10006', 'user6@example.com', 'User Six', '2024-01-06', NULL),
-('10007', 'user7@example.com', 'User Seven', '2024-01-07', NULL),
-('10008', 'user8@example.com', 'User Eight', '2024-01-08', NULL),
-('10009', 'user9@example.com', 'User Nine', '2024-01-09', NULL),
-('10010', 'user10@example.com', 'User Ten', '2024-01-10', NULL),
-('10011', 'user10011@gmail.com', 'wqerghjmm', '2024-09-10', '2024-09-24 14:30:04');
+INSERT INTO `users` (`id`, `email`, `full_name`, `photourl`, `registration_date`) VALUES
+('10001', 'user1@example.com', 'User One', '', '2024-01-01'),
+('10002', 'user2@example.com', 'User Two', '', '2024-01-02'),
+('10003', 'user3@example.com', 'User Three', '', '2024-01-03'),
+('10004', 'user4@example.com', 'User Four', '', '2024-01-04'),
+('10005', 'user5@example.com', 'User Five', '', '2024-01-05'),
+('10006', 'user6@example.com', 'User Six', '', '2024-01-06'),
+('10007', 'user7@example.com', 'User Seven', '', '2024-01-07'),
+('10008', 'user8@example.com', 'User Eight', '', '2024-01-08'),
+('10009', 'user9@example.com', 'User Nine', '', '2024-01-09'),
+('10010', 'user10@example.com', 'User Ten', '', '2024-01-10'),
+('10011', 'user10011@gmail.com', 'wqerghjmm', '', '2024-09-10'),
+('8UuhIkPqeGgbtNLGKkcdHL8nha33', 'prazzwaldahal@gmail.com', 'Prajwal Dahal', 'https://lh3.googleusercontent.com/a/ACg8ocK4FBqjWiy1RMGhzbJCInabSKbhZzXHbKuA-HyfkYxRQ_dRVDdy=s96-c', '2024-12-06'),
+('jfcAcsnfwKP3ccsnURwvx8TKV0w2', 'prajwaldahal072@gmail.com', 'Prajwal Dahal', 'https://lh3.googleusercontent.com/a/ACg8ocIDQb8jvRnpKVGAUhozjO_VQCl4i76enPrPvomFvN0q8TWPig=s96-c', '2024-12-05');
 
 --
 -- Triggers `users`
@@ -633,13 +749,13 @@ ALTER TABLE `user_tokens`
 -- AUTO_INCREMENT for table `admin_notification`
 --
 ALTER TABLE `admin_notification`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123622;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123697;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `reading_progress`
@@ -651,13 +767,13 @@ ALTER TABLE `reading_progress`
 -- AUTO_INCREMENT for table `rental_transactions`
 --
 ALTER TABLE `rental_transactions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61873;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61908;
 
 --
 -- AUTO_INCREMENT for table `rented_books_history`
 --
 ALTER TABLE `rented_books_history`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61889;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61927;
 
 --
 -- AUTO_INCREMENT for table `requestedbook`
