@@ -63,6 +63,3 @@ This project contains an `api` folder that defines the backend API using PHP. Th
 
 - The default **username** is `admin` and the **password** is `pwd`. Use these credentials to log in to the admin panel initially. You can change the password after logging in.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
