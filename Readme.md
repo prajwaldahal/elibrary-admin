@@ -4,7 +4,7 @@ The admin panel for the E-Library application allows administrators to manage us
 
 ## Features
 
-- **User Management**: Add, update, and remove users.
+- **User Management**: view registered users.
 - **Book Management**: Add, update, and remove books from the library.
 - **Rental Management**: View and manage rental transactions.
 - **Income Summaries and Charts**: View summarized rental income data and visualize trends using charts.
